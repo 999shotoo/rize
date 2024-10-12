@@ -154,7 +154,7 @@ export default function FloatingPlayer() {
         navigator.mediaSession.playbackState = "none";
       });
     }
-  }, []);
+  }, [handleNextSong, handlePlayPause, handlePreviousSong]);
 
   useEffect(() => {
     if ("mediaSession" in navigator) {
@@ -172,23 +172,6 @@ export default function FloatingPlayer() {
       });
     }
   }, [duration, playedTime, playbackRate]);
-
-  // useEffect(() => {
-  //   if ("mediaSession" in navigator) {
-  //     navigator.mediaSession.playbackState = isPlaying ? "playing" : "paused";
-  //   }
-  // }, [isPlaying]);
-
-  // const playedTime = played * duration;
-  // useEffect(() => {
-  //   if ("mediaSession" in navigator) {
-  //     navigator.mediaSession.setPositionState({
-  //       duration: duration,
-  //       playbackRate: playbackRate,
-  //       position: playedTime,
-  //     });
-  //   }
-  // }, [duration, played]);
 
   if (!activeMusic) {
     return null;
