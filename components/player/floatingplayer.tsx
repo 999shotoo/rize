@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, SetStateAction } from "react";
 import ReactPlayer from "react-player";
 import { useTheme } from "next-themes";
 import { Slider } from "@/components/ui/slider";
@@ -21,6 +21,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useStoreSongs } from "@/hook/useStoreSongs";
 import Image from "next/image";
+import Marquee from "react-fast-marquee";
 
 export default function FloatingPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -50,10 +51,15 @@ export default function FloatingPlayer() {
 
   const formatTime = (seconds: number) => {
     const date = new Date(seconds * 1000);
-    const mm = date.getUTCMinutes();
+    const mm = date.getUTCMinutes().toString().padStart(2, "0");
     const ss = date.getUTCSeconds().toString().padStart(2, "0");
     return `${mm}:${ss}`;
   };
+
+  const isNextSongDisabled =
+    (activeMusic && songs.length === 0) || !activeMusic;
+  const isPreviousSongDisabled =
+    (activeMusic && songs.length === 0) || !activeMusic;
 
   const handleNextSong = () => {
     if (activeMusic && songs.length > 0) {
@@ -80,20 +86,123 @@ export default function FloatingPlayer() {
   }, []);
 
   useEffect(() => {
-    // const handleKeyPress = (e: KeyboardEvent) => {
-    //   if (e.code === "Space") {
-    //     e.preventDefault();
-    //     handlePlayPause();
-    //   }
-    // };
-    // window.addEventListener("keydown", handleKeyPress);
-    // return () => window.removeEventListener("keydown", handleKeyPress);
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (
+        document.activeElement &&
+        document.activeElement.tagName !== "INPUT"
+      ) {
+        // Check if the user is not in search mode
+        if (e.code === "Space") {
+          e.preventDefault();
+          handlePlayPause();
+        } else if (e.code === "ArrowRight") {
+          handleNextSong();
+        } else if (e.code === "ArrowLeft") {
+          handlePreviousSong();
+        }
+      }
+    };
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress);
+  }, [handlePlayPause, handleNextSong, handlePreviousSong]);
+
+  useEffect(() => {
+    if ("mediaSession" in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: activeMusic?.name,
+        artist: activeMusic?.artists.primary[0].name,
+        album: activeMusic?.album?.url, // Access the url property of the album object
+        artwork: [
+          {
+            src:
+              activeMusic?.image.find((image) => image.quality === "500x500")
+                ?.url || "",
+            sizes: "128x128",
+            type: "image/jpeg",
+          },
+        ],
+      });
+
+      // Remove action handlers from this useEffect hook
+    }
+  }, [activeMusic]);
+
+  const [playbackRate, setPlaybackRate] = useState(1);
+
+  const handlePlaybackRateChange = (rate: SetStateAction<number>) => {
+    setPlaybackRate(rate);
+  };
+  useEffect(() => {
+    if ("mediaSession" in navigator) {
+      navigator.mediaSession.setActionHandler("play", () => {
+        handlePlayPause();
+        navigator.mediaSession.playbackState = "playing";
+      });
+
+      navigator.mediaSession.setActionHandler("pause", () => {
+        handlePlayPause();
+        navigator.mediaSession.playbackState = "paused";
+      });
+
+      navigator.mediaSession.setActionHandler("previoustrack", () => {
+        handlePreviousSong();
+        navigator.mediaSession.playbackState = "none";
+      });
+
+      navigator.mediaSession.setActionHandler("nexttrack", () => {
+        handleNextSong();
+        navigator.mediaSession.playbackState = "none";
+      });
+      navigator.mediaSession.setActionHandler("seekbackward", () => {
+        playerRef.current?.seekTo(played - 10);
+      });
+      navigator.mediaSession.setActionHandler("seekforward", () => {
+        playerRef.current?.seekTo(played + 10);
+      });
+      navigator.mediaSession.setActionHandler("stop", () => {
+        setIsPlaying(false);
+        navigator.mediaSession.playbackState = "none";
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if ("mediaSession" in navigator) {
+      navigator.mediaSession.playbackState = isPlaying ? "playing" : "paused";
+    }
   }, [isPlaying]);
+
+  const playedTime = played * duration;
+  useEffect(() => {
+    if ("mediaSession" in navigator) {
+      navigator.mediaSession.setPositionState({
+        duration: duration,
+        playbackRate: playbackRate,
+        position: playedTime,
+      });
+    }
+  }, [duration, playedTime, playbackRate]);
+
+  // useEffect(() => {
+  //   if ("mediaSession" in navigator) {
+  //     navigator.mediaSession.playbackState = isPlaying ? "playing" : "paused";
+  //   }
+  // }, [isPlaying]);
+
+  // const playedTime = played * duration;
+  // useEffect(() => {
+  //   if ("mediaSession" in navigator) {
+  //     navigator.mediaSession.setPositionState({
+  //       duration: duration,
+  //       playbackRate: playbackRate,
+  //       position: playedTime,
+  //     });
+  //   }
+  // }, [duration, played]);
 
   if (!activeMusic) {
     return null;
   }
-
   return (
     <div
       className={cn(
@@ -127,7 +236,7 @@ export default function FloatingPlayer() {
           )}
         >
           {/* Album and Track Info */}
-          <div className="flex items-center space-x-4 w-1/3">
+          <div className="flex items-center space-x-4 w-1/2 md:w-1/3">
             <Image
               height={500}
               width={500}
@@ -138,10 +247,18 @@ export default function FloatingPlayer() {
               alt={activeMusic.name}
               className="w-12 h-12 rounded-md"
             />
-            <div className="overflow-hidden">
-              <h3 className="text-sm font-medium truncate text-foreground">
+            <div className="overflow-hidden hidden md:block">
+              <h3 className="text-sm font-medium  text-foreground">
                 {activeMusic.name}
               </h3>
+              <p className="text-xs text-muted-foreground truncate">
+                {activeMusic.artists.primary[0].name}
+              </p>
+            </div>
+            <div className="overflow-hidden md:hidden">
+              <Marquee className="text-sm font-medium  text-foreground">
+                {activeMusic.name}
+              </Marquee>
               <p className="text-xs text-muted-foreground truncate">
                 {activeMusic.artists.primary[0].name}
               </p>
@@ -149,10 +266,21 @@ export default function FloatingPlayer() {
           </div>
 
           {/* Player Controls */}
-          <div className="flex flex-col items-center justify-center w-1/3">
+          <div className="flex flex-col items-center justify-center w-3/5">
             <div className="flex items-center justify-center space-x-4 mb-2">
-              <Button variant="ghost" size="icon" onClick={handlePreviousSong}>
-                <SkipBack className="w-5 h-5 text-primary" />
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handlePreviousSong}
+                disabled={isPreviousSongDisabled}
+              >
+                <SkipBack
+                  className={`w-5 h-5 ${
+                    isPreviousSongDisabled
+                      ? "text-muted-foreground"
+                      : "text-primary"
+                  }`}
+                />
               </Button>
               <Button
                 variant="outline"
@@ -166,8 +294,19 @@ export default function FloatingPlayer() {
                   <Play className="w-6 h-6" />
                 )}
               </Button>
-              <Button variant="ghost" size="icon" onClick={handleNextSong}>
-                <SkipForward className="w-5 h-5 text-primary" />
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleNextSong}
+                disabled={isNextSongDisabled}
+              >
+                <SkipForward
+                  className={`w-5 h-5 ${
+                    isNextSongDisabled
+                      ? "text-muted-foreground"
+                      : "text-primary"
+                  }`}
+                />
               </Button>
             </div>
             <div className="w-full max-w-md flex items-center space-x-2">
@@ -311,12 +450,14 @@ export default function FloatingPlayer() {
           muted={muted}
           onProgress={handleProgress}
           onDuration={setDuration}
+          onPlaybackRateChange={handlePlaybackRateChange}
           onEnded={handleNextSong}
           config={{
             file: {
               forceAudio: true,
             },
           }}
+          playsinline={true}
         />
       </div>
     </div>

@@ -1,16 +1,35 @@
+"use client";
+
 import { Music, MusicIcon, Search, User } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { FormEvent } from "react";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { searchAction } from "@/action/fetch";
+import { usePathname } from "next/navigation";
+
+const navItems: { href: string; label: string }[] = [
+  {
+    href: "/",
+    label: "Home",
+  },
+  {
+    href: "/artists",
+    label: "Artists",
+  },
+  {
+    href: "/playlist",
+    label: "Playlist",
+  },
+  {
+    href: "/albums",
+    label: "Albums",
+  },
+];
 
 export function Navbar() {
-  const searchAction = async (data: FormData) => {
-    "use server";
-    return redirect("/search?q=" + data.get("search"));
-  };
-
+  const pathname = usePathname();
   return (
     <>
       <header className="flex items-center justify-between border-b p-4 bg-background">
@@ -20,6 +39,21 @@ export function Navbar() {
           </Link>
         </div>
         <div className="flex gap-2">
+          <nav className="hidden lg:flex gap-4 text-md my-auto px-2">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={` hover:underline ${
+                  pathname === item.href
+                    ? "text-primary"
+                    : "text-secondary-foreground"
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
           <form className="flex items-center gap-2" action={searchAction}>
             <Input
               className="w-48 md:w-96 rounded-full"

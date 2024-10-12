@@ -1,5 +1,7 @@
 "use server";
 
+import { redirect } from "next/navigation";
+
 export async function fetchhome() {
     const response = await fetch(`${process.env.API_URL_1}/modules`, { cache: "no-store" })
     const data = await response.json()
@@ -16,7 +18,13 @@ export async function fetchSongsById(id: string) {
     const fetchsongData = await fetch(`${process.env.API_URL_2}/api/songs/${id}`);
     const songData = await fetchsongData.json();
     const fetchsuggestionData = await fetch(`${process.env.API_URL_2}/api/songs/${id}/suggestions`);
-    const suggestionData = await fetchsuggestionData.json();
+    let suggestionData = await fetchsuggestionData.json();
+
+    if (!suggestionData.success) {
+        const fetchsuggestionDataQ0QweNrE = await fetch(`${process.env.API_URL_2}/api/songs/Q0QweNrE/suggestions`);
+        suggestionData = await fetchsuggestionDataQ0QweNrE.json();
+    }
+
     const combineData = { data: { song: songData, suggestions: suggestionData } }
     return combineData;
 }
@@ -62,3 +70,7 @@ export async function fetchSearchPlaylist(query: string) {
     const data = await response.json()
     return data
 }
+
+export async function searchAction(data: FormData) {
+    return redirect("/search?q=" + data.get("search"));
+};
