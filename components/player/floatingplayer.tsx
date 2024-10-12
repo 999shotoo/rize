@@ -153,16 +153,6 @@ export default function FloatingPlayer() {
         handleNextSong();
         navigator.mediaSession.playbackState = "none";
       });
-      navigator.mediaSession.setActionHandler("seekbackward", () => {
-        playerRef.current?.seekTo(played - 10);
-      });
-      navigator.mediaSession.setActionHandler("seekforward", () => {
-        playerRef.current?.seekTo(played + 10);
-      });
-      navigator.mediaSession.setActionHandler("stop", () => {
-        setIsPlaying(false);
-        navigator.mediaSession.playbackState = "none";
-      });
     }
   }, []);
 
