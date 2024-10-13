@@ -16,12 +16,16 @@ import {
   ChevronDown,
   ChevronUp,
   Maximize2,
+  Download,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { useStoreSongs } from "@/hook/useStoreSongs";
-import Image from "next/image";
 import Marquee from "react-fast-marquee";
+import { Skeleton } from "../ui/skeleton";
+import CustomImage from "../ui/image";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function FloatingPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -172,9 +176,75 @@ export default function FloatingPlayer() {
       });
     }
   }, [duration, playedTime, playbackRate]);
+  useEffect(() => {
+    if (activeMusic) {
+      setIsPlaying(true);
+    } else {
+      setIsPlaying(false);
+    }
+  }, [activeMusic]);
+
+  const downloadSong = async () => {
+    const response = await fetch(
+      `${
+        activeMusic?.downloadUrl.find(
+          (downloadUrl) => downloadUrl.quality === "320kbps"
+        )?.url
+      }`
+    );
+    const datas = await response.blob();
+    const url = URL.createObjectURL(datas);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${activeMusic?.name}.mp3`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   if (!activeMusic) {
-    return null;
+    return (
+      <>
+        <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border shadow-lg transition-all duration-300 z-50">
+          <div className="max-w-7xl mx-auto h-full flex flex-col">
+            {/* Mobile Expand Button */}
+            {/* <button className="md:hidden absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-background border border-border rounded-full p-1 z-10 dark:bg-card dark:border-accent">
+              <Skeleton className="w-4 h-4" />
+            </button> */}
+
+            {/* Main Player Content */}
+            <div className="flex items-center justify-between h-20 px-4">
+              {/* Album and Track Info */}
+              <div className="flex items-center space-x-4 w-1/2 md:w-1/3">
+                <Skeleton className="w-12 h-12 rounded-md" />
+                <div className="overflow-hidden">
+                  <Skeleton className="h-4 w-[60px] md:w-[150px]" />
+                </div>
+              </div>
+
+              {/* Player Controls */}
+              <div className="flex flex-col items-center justify-center w-3/5">
+                <div className="flex items-center justify-center space-x-4 mb-2">
+                  <Skeleton className="w-5 h-5" />
+                  <Skeleton className="w-6 h-6" />
+                  <Skeleton className="w-5 h-5" />
+                </div>
+                <div className="w-full max-w-md flex items-center space-x-2">
+                  <Skeleton className="w-8 h-4" />
+                  <Skeleton className="w-full h-4" />
+                  <Skeleton className="w-8 h-4" />
+                </div>
+              </div>
+
+              {/* Volume Control */}
+              <div className="hidden md:flex items-center space-x-2 w-1/3 justify-end">
+                <Skeleton className="w-5 h-5" />
+                <Skeleton className="w-24 h-4" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </>
+    );
   }
   return (
     <div
@@ -214,16 +284,18 @@ export default function FloatingPlayer() {
               height={500}
               width={500}
               src={
-                activeMusic.image.find((image) => image.quality === "500x500")
+                activeMusic.image.find((image) => image.quality === "150x150")
                   ?.url || "/placeholder.svg?height=48&width=48"
               }
               alt={activeMusic.name}
-              className="w-12 h-12 rounded-md"
+              className="w-12 md:w-12 h-12 rounded-md"
             />
             <div className="overflow-hidden hidden md:block">
-              <h3 className="text-sm font-medium  text-foreground">
-                {activeMusic.name}
-              </h3>
+              <Link href={`/${activeMusic.type}/${activeMusic.id}`}>
+                <h3 className="text-sm font-medium  text-foreground">
+                  {activeMusic.name}
+                </h3>
+              </Link>
               <p className="text-xs text-muted-foreground truncate">
                 {activeMusic.artists.primary[0].name}
               </p>
@@ -324,14 +396,17 @@ export default function FloatingPlayer() {
             >
               <Maximize2 className="w-5 h-5 text-primary" />
             </Button>
+            <Button variant="ghost" size="icon" onClick={() => downloadSong()}>
+              <Download className="w-5 h-5 text-primary" />
+            </Button>
           </div>
         </div>
 
         {/* Expanded Mobile View */}
         {isExpanded && (
-          <div className="md:hidden flex-grow flex flex-col items-center justify-center p-4 space-y-6">
+          <div className="md:hidden flex-grow flex flex-col items-center justify-center p-4 space-y-6 relative">
             <div>
-              <Image
+              <CustomImage
                 height={500}
                 width={500}
                 src={

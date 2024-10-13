@@ -17,11 +17,11 @@ export async function fetchAlbumById(id: string) {
 export async function fetchSongsById(id: string) {
     const fetchsongData = await fetch(`${process.env.API_URL_2}/api/songs/${id}`);
     const songData = await fetchsongData.json();
-    const fetchsuggestionData = await fetch(`${process.env.API_URL_2}/api/songs/${id}/suggestions`);
+    const fetchsuggestionData = await fetch(`${process.env.API_URL_2}/api/songs/${id}/suggestions?limit=10000000`);
     let suggestionData = await fetchsuggestionData.json();
 
     if (!suggestionData.success) {
-        const fetchsuggestionDataQ0QweNrE = await fetch(`${process.env.API_URL_2}/api/songs/Q0QweNrE/suggestions`);
+        const fetchsuggestionDataQ0QweNrE = await fetch(`${process.env.API_URL_2}/api/songs/Q0QweNrE/suggestions?limit=10000000`);
         suggestionData = await fetchsuggestionDataQ0QweNrE.json();
     }
 
@@ -30,7 +30,7 @@ export async function fetchSongsById(id: string) {
 }
 
 export async function fetchPlaylistById(id: string) {
-    const response = await fetch(`${process.env.API_URL_2}/api/playlists?id=${id}`)
+    const response = await fetch(`${process.env.API_URL_2}/api/playlists?id=${id}&limit=1000000`)
     const data = await response.json()
     return data
 }

@@ -1,10 +1,8 @@
 "use client";
 
-import { Music, MusicIcon, Search, User } from "lucide-react";
+import { MusicIcon, User } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { FormEvent } from "react";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import { searchAction } from "@/action/fetch";
 import { usePathname } from "next/navigation";

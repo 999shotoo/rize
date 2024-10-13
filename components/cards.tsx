@@ -9,7 +9,7 @@ import {
   fetchPlaylistById,
   fetchSongsById,
 } from "@/action/fetch";
-import Image from "next/image";
+import CustomImage from "./ui/image";
 export function CustomCards({ data }: { data: any }) {
   const { setActiveMusic, setSongs } = useStoreSongs();
 
@@ -36,7 +36,7 @@ export function CustomCards({ data }: { data: any }) {
       {data.map((item: any) => (
         <div key={item.id} className="w-full max-w-sm overflow-hidden group">
           <div className="relative">
-            <Image
+            <CustomImage
               src={
                 item.image && typeof item.image === "string"
                   ? item.image

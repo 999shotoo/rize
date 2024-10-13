@@ -1,7 +1,6 @@
 "use client";
 
 import { formatTime } from "@/hook/usetformattime";
-import Image from "next/image";
 import {
   AwaitedReactNode,
   JSXElementConstructor,
@@ -12,8 +11,8 @@ import {
 } from "react";
 import { Button } from "../ui/button";
 import { Play } from "lucide-react";
-import Link from "next/link";
 import { useStoreSongs } from "@/hook/useStoreSongs";
+import CustomImage from "../ui/image";
 
 export default function PlayListClientPage({ data }: { data: any }) {
   const { setActiveMusic, setSongs, activeMusic } = useStoreSongs();
@@ -31,7 +30,7 @@ export default function PlayListClientPage({ data }: { data: any }) {
     <>
       <div className="container mx-auto px-4 py-4">
         <div className="flex flex-col md:flex-row items-center md:items-end gap-6 md:mb-6 ">
-          <Image
+          <CustomImage
             src={
               data.image.find(
                 (image: { quality: string }) => image.quality === "500x500"

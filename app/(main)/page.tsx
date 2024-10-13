@@ -11,8 +11,14 @@ export default async function Home() {
       {/* <ThemeToggle /> */}
 
       <div className="container p-6 mx-auto">
-        <CustomCards data={homedata.data.albums.data} />
-        <CustomCards data={homedata.data.charts.data} />
+        <div>
+          <h2 className="text-2xl pb-4 font-bold">Trending :</h2>
+          <CustomCards data={homedata.data.albums.data} />
+        </div>
+        <div className="my-6">
+          <h2 className="text-2xl pb-4 font-bold">Top Charts :</h2>
+          <CustomCards data={homedata.data.charts.data} />
+        </div>
       </div>
     </>
   );
