@@ -3,7 +3,6 @@
 import Link from "next/link";
 import {
   AudioLines,
-  CircleUser,
   Home,
   Library,
   ListMusic,
@@ -20,20 +19,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ScrollArea } from "./ui/scroll-area";
 import { searchAction } from "@/action/fetch";
 import { ReactNode } from "react";
 import { usePathname } from "next/navigation";
+import { UserButton } from "@clerk/nextjs";
+import { useStoreSongs } from "@/hook/useStoreSongs";
+import SidebarPlayer from "./player/sidebarplayer";
 export const description =
   "A products dashboard with a sidebar navigation and a main content area. The dashboard has a header with a search input and a user menu. The sidebar has a logo, navigation links, and a card with a call to action. The main content area shows an empty state with a call to action.";
 
@@ -64,16 +58,17 @@ export function NavWrapper({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { activeMusic } = useStoreSongs();
   const pathname = usePathname();
   return (
-    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr_320px]">
       {/* Sidebar */}
       <div className="hidden border-r bg-muted/40 md:block h-[92vh]">
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link className="flex items-center justify-center gap-2" href="/">
-              <AudioLines className="h-8 w-8" />
-              <span className="font-bold text-2xl">
+              <AudioLines className="h-8 w-8 text-primary" />
+              <span className="font-bold text-2xl ">
                 Rize<span className="font-light text-foreground/75">PLAY</span>
               </span>
             </Link>
@@ -124,7 +119,7 @@ export function NavWrapper({
               className="flex items-center justify-center md:hidden gap-2"
               href="/"
             >
-              <AudioLines className="h-6 w-6" />
+              <AudioLines className="h-6 w-6 text-primary" />
               <span className="font-bold text-lg">
                 Rize<span className="font-light text-foreground/75">PLAY</span>
               </span>
@@ -143,22 +138,7 @@ export function NavWrapper({
               </div>
             </form>
           </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild className="hidden md:block">
-              <Button variant="secondary" size="icon" className="rounded-full">
-                <CircleUser className="h-5 w-5" />
-                <span className="sr-only">Toggle user menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <UserButton />
           <Sheet>
             <SheetTrigger asChild>
               <Button
@@ -207,6 +187,12 @@ export function NavWrapper({
           </Sheet>
         </header>
         <ScrollArea className="h-[90vh]">{children}</ScrollArea>
+      </div>
+
+      {/* Right Side Bar */}
+
+      <div className="hidden border-l bg-muted/40 lg:block h-[92vh]">
+        <SidebarPlayer />
       </div>
     </div>
   );

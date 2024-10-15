@@ -48,7 +48,7 @@ export async function fetchLyricsById(id: string) {
 }
 
 export async function fetchSearchSongs(query: string) {
-    const response = await fetch(`${process.env.API_URL_2}/api/search/songs?query=${query}`)
+    const response = await fetch(`${process.env.API_URL_2}/api/search/songs?query=${query}&limit=18`)
     const data = await response.json()
     return data
 }
