@@ -20,7 +20,7 @@ export default function NotAuthHome() {
             Rize<span className="font-light text-foreground/75">PLAY</span>
           </span>
         </Link>
-        <div className="space-x-4">
+        <div className="flex gap-2">
           <Link href="/sign-in">
             <Button variant="ghost">Log in</Button>
           </Link>
