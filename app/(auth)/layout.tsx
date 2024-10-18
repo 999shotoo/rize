@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { auth } from "@clerk/nextjs/server";
 import { Undo2 } from "lucide-react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -6,6 +7,7 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 import localFont from "next/font/local";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 const cloisterBlack = localFont({
   src: "../fonts/CloisterBlackLight-axjg.ttf",
@@ -17,6 +19,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { userId } = auth();
+  if (userId) {
+    redirect("/");
+  }
+
   return (
     <>
       <div className="relative">

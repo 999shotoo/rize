@@ -13,6 +13,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import {
   Key,
   ReactElement,
@@ -30,6 +31,9 @@ export default async function SearchPage(params: {
   const searchedAlbums = await fetchSearchAlbums(query);
   const searchedArtists = await fetchSearchArtists(query);
   const searchedPlaylists = await fetchSearchPlaylist(query);
+  if (query === "" || query === undefined) {
+    redirect("/");
+  }
   return (
     <>
       <div className="container p-6 mx-auto mb-10">

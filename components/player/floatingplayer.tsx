@@ -292,9 +292,9 @@ export default function FloatingPlayer() {
             />
             <div className="overflow-hidden hidden md:block">
               <Link href={`/${activeMusic.type}/${activeMusic.id}`}>
-                <h3 className="text-sm font-medium  text-foreground">
+                <Marquee className="text-sm font-medium  text-foreground">
                   {activeMusic.name}
-                </h3>
+                </Marquee>
               </Link>
               <p className="text-xs text-muted-foreground truncate">
                 {activeMusic.artists.primary[0].name}

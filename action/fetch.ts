@@ -1,9 +1,16 @@
 "use server";
-
+import { cookies } from 'next/headers'
 import { redirect } from "next/navigation";
 
-export async function fetchhome() {
-    const response = await fetch(`${process.env.API_URL_1}/modules`, { cache: "no-store" })
+
+export async function fetchhome(language: string) {
+    const response = await fetch(`${process.env.API_URL_1}/modules?lang=${language}`, { cache: "no-cache" })
+    const data = await response.json()
+    return data
+}
+
+export async function fetchPages(language: string) {
+    const response = await fetch(`${process.env.API_URL_3}/modules?language=${language}`, { cache: "no-cache" })
     const data = await response.json()
     return data
 }

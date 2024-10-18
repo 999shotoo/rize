@@ -13,7 +13,7 @@ import CustomImage from "./ui/image";
 export function CustomCards({ data }: { data: any }) {
   const { setActiveMusic, setSongs } = useStoreSongs();
 
-  const PlayAlbum = async (data: any) => {
+  const PlaySelected = async (data: any) => {
     if (data.type === "album") {
       const albumdata = await fetchAlbumById(data.id);
       setSongs(albumdata.data.songs);
@@ -61,7 +61,7 @@ export function CustomCards({ data }: { data: any }) {
               className="w-full h-auto object-cover transition-opacity duration-300 group-hover:opacity-50 rounded-xl"
             />
             <div
-              onClick={() => PlayAlbum(item)}
+              onClick={() => PlaySelected(item)}
               className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  rounded-full p-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
             >
               <PlayIcon className="w-6 h-6 " />

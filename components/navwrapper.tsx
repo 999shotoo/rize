@@ -3,6 +3,7 @@
 import Link from "next/link";
 import {
   AudioLines,
+  Coffee,
   Home,
   Library,
   ListMusic,
@@ -28,6 +29,7 @@ import { usePathname } from "next/navigation";
 import { UserButton } from "@clerk/nextjs";
 import { useStoreSongs } from "@/hook/useStoreSongs";
 import SidebarPlayer from "./player/sidebarplayer";
+import LanguageSelector from "./langselector";
 export const description =
   "A products dashboard with a sidebar navigation and a main content area. The dashboard has a header with a search input and a user menu. The sidebar has a logo, navigation links, and a card with a call to action. The main content area shows an empty state with a call to action.";
 
@@ -96,16 +98,17 @@ export function NavWrapper({
           <div className="mt-auto p-4">
             <Card x-chunk="dashboard-02-chunk-0">
               <CardHeader className="p-2 pt-0 md:p-4">
-                <CardTitle>Upgrade to Pro</CardTitle>
+                <CardTitle>Support Us </CardTitle>
                 <CardDescription>
-                  Unlock all features and get unlimited access to our support
-                  team.
+                  Our service is and will always be free for everyone.
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
-                <Button size="sm" className="w-full">
-                  Upgrade
-                </Button>
+                <Link href="https://ko-fi.com/999shotoo" target="_blank">
+                  <Button size="sm" className="w-full gap-2">
+                    <Coffee className="w-4 h-4" /> Ko-fi
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           </div>
@@ -138,7 +141,10 @@ export function NavWrapper({
               </div>
             </form>
           </div>
-          <UserButton />
+          <div className="hidden md:flex gap-2">
+            <LanguageSelector />
+            <UserButton />
+          </div>
           <Sheet>
             <SheetTrigger asChild>
               <Button
@@ -168,20 +174,25 @@ export function NavWrapper({
                 ))}
               </nav>
               <div className="mt-auto">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Upgrade to Pro</CardTitle>
+                <Card className="p-2">
+                  <CardHeader className="p-2 pt-0 md:p-4">
+                    <CardTitle>Support Us </CardTitle>
                     <CardDescription>
-                      Unlock all features and get unlimited access to our
-                      support team.
+                      Our service is and will always be free for everyone.
                     </CardDescription>
                   </CardHeader>
-                  <CardContent>
-                    <Button size="sm" className="w-full">
-                      Upgrade
-                    </Button>
+                  <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
+                    <Link href="https://ko-fi.com/999shotoo" target="_blank">
+                      <Button size="sm" className="w-full gap-2">
+                        <Coffee className="w-4 h-4" /> Ko-fi
+                      </Button>
+                    </Link>
                   </CardContent>
                 </Card>
+                <div className="flex gap-2 py-2">
+                  <LanguageSelector />
+                  <UserButton />
+                </div>
               </div>
             </SheetContent>
           </Sheet>
