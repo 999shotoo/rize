@@ -67,7 +67,7 @@ export function FeaturedCard({ playlist }: any) {
               FEATURED PLAYLIST
             </p>
             <h2 className="text-white text-3xl md:text-4xl font-bold mb-2">
-              {playlist.name}
+              {playlist.name || playlist.title}
             </h2>
             <div className="flex space-x-4">
               <Link href={`/${playlist.type}/${playlist.id}`} passHref>

@@ -10,6 +10,7 @@ import {
   Menu,
   Music,
   Search,
+  SearchIcon,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -40,21 +41,34 @@ const navItems: { href: string; label: string; icon: ReactNode }[] = [
     icon: <Home className="w-4 h-4" />,
   },
   {
-    href: "/songs",
-    label: "Songs",
-    icon: <Music className="w-4 h-4" />,
-  },
-  {
-    href: "/playlists",
-    label: "Playlists",
-    icon: <ListMusic className="w-4 h-4" />,
-  },
-  {
-    href: "/albums",
-    label: "Albums",
-    icon: <Library className="w-4 h-4" />,
+    href: "/search",
+    label: "Search",
+    icon: <SearchIcon className="w-4 h-4" />,
   },
 ];
+
+// const navItems: { href: string; label: string; icon: ReactNode }[] = [
+//   {
+//     href: "/",
+//     label: "Home",
+//     icon: <Home className="w-4 h-4" />,
+//   },
+//   {
+//     href: "/songs",
+//     label: "Songs",
+//     icon: <Music className="w-4 h-4" />,
+//   },
+//   {
+//     href: "/playlists",
+//     label: "Playlists",
+//     icon: <ListMusic className="w-4 h-4" />,
+//   },
+//   {
+//     href: "/albums",
+//     label: "Albums",
+//     icon: <Library className="w-4 h-4" />,
+//   },
+// ];
 export function NavWrapper({
   children,
 }: Readonly<{
