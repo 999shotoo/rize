@@ -21,8 +21,6 @@ export const metadata: Metadata = {
     "RizePlay is a free music streaming website where you can stream your favorite musics online for free.",
   manifest: "/manifest.json",
   keywords: ["Music", "Songs", "Free", "No ads", "Watch", "Online", "RizePlay"],
-  viewport:
-    "minimum-scale=1, initial-scale=1, width=device-width, shrink-to-     fit=no, viewport-fit=cover",
 };
 
 export default function RootLayout({
