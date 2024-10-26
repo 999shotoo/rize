@@ -12,7 +12,7 @@ export default function SidebarPlayer() {
 
   useEffect(() => {
     if (activeMusic) {
-      fetchLyricsById(activeMusic.id || "").then((data) => {
+      fetchLyricsById(`${activeMusic.id}` || "").then((data) => {
         setLyrics(data);
       });
       // Scroll lyrics to top when song changes
@@ -45,7 +45,7 @@ export default function SidebarPlayer() {
   return (
     <>
       <ScrollArea className="h-[100vh] ">
-        <div className="flex h-full max-h-[100vh] flex-col bg-gradient-to-b from-neutral-900 to-black text-white">
+        <div className="flex h-full max-h-[100vh] flex-col bg-gradient-to-b from-card dark:to-black ">
           <div className="flex-grow flex flex-col items-center justify-center p-4 space-y-2">
             <div className="w-80 h-80 relative group">
               <CustomImage
@@ -59,17 +59,15 @@ export default function SidebarPlayer() {
                 alt={`${activeMusic?.name}`}
                 className="w-full h-full object-cover rounded-md shadow-lg p-2"
               />
-              <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <span className="text-white text-2xl font-bold">
-                  Now Playing
-                </span>
+              <div className="absolute inset-0 bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <span className=" text-2xl font-bold">Now Playing</span>
               </div>
             </div>
             <div className="text-center">
               <h2 className="text-xl font-bold">{activeMusic?.name}</h2>
             </div>
             <ScrollArea
-              className="h-[400px] w-full max-w-[400px] bg-neutral-900 rounded-md p-6"
+              className="h-[400px] w-full max-w-[400px] bg-card rounded-md p-6"
               ref={lyricsRef}
             >
               {lyrics.data?.lyrics ? (
@@ -80,9 +78,7 @@ export default function SidebarPlayer() {
                   }}
                 />
               ) : (
-                <p className="text-center text-gray-400 text-xl">
-                  No lyrics found
-                </p>
+                <p className="text-center  text-xl">No lyrics found</p>
               )}
             </ScrollArea>
           </div>

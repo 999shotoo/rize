@@ -4,7 +4,7 @@ import ThemeToggle from "@/components/theme/theme-toggle";
 import CustomImage from "@/components/ui/image";
 import { getlanguage } from "@/hook/getcookies";
 import { currentUser } from "@clerk/nextjs/server";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import {
   Key,
   ReactElement,

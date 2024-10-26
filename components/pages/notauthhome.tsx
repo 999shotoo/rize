@@ -7,7 +7,7 @@ import {
   ZapIcon,
   AudioLines,
 } from "lucide-react";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import ThemeToggle from "../theme/theme-toggle";
 
 export default function NotAuthHome() {

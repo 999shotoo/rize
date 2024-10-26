@@ -16,7 +16,6 @@ export default async function SearchPage(params: {
   const searchedSongs = await fetchSearchSongs(query);
   const searchedAlbums = await fetchSearchAlbums(query);
   const searchedPlaylists = await fetchSearchPlaylist(query);
-  console.log(searchedSongs, searchedAlbums, searchedPlaylists);
   return (
     <>
       <div className="container p-6 mx-auto mb-10">

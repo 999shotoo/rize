@@ -1,6 +1,5 @@
 "use client";
-
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { PlayIcon } from "lucide-react";
 import { useStoreSongs } from "@/hook/useStoreSongs";

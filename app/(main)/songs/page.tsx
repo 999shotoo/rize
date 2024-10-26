@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import CustomImage from "@/components/ui/image";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cookies } from "next/headers";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 
 export default async function SongsPage() {
   const cookieStore = cookies();

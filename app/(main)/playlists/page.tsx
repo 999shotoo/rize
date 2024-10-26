@@ -8,7 +8,7 @@ import CustomImage from "@/components/ui/image";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Music2, Play } from "lucide-react";
 import { cookies } from "next/headers";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import {
   Key,
   ReactElement,

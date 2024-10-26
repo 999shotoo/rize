@@ -11,7 +11,7 @@ import {
 } from "react";
 import { Button } from "../ui/button";
 import { Play } from "lucide-react";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { useStoreSongs } from "@/hook/useStoreSongs";
 import CustomImage from "../ui/image";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import CustomImage from "./ui/image";

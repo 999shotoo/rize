@@ -24,7 +24,7 @@ import { useStoreSongs } from "@/hook/useStoreSongs";
 import Marquee from "react-fast-marquee";
 import { Skeleton } from "../ui/skeleton";
 import CustomImage from "../ui/image";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
 
 export default function FloatingPlayer() {
@@ -115,7 +115,6 @@ export default function FloatingPlayer() {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: activeMusic?.name,
         artist: activeMusic?.artists.primary[0].name,
-        album: activeMusic?.album?.url, // Access the url property of the album object
         artwork: [
           {
             src:
@@ -481,33 +480,29 @@ export default function FloatingPlayer() {
           </div>
         )}
       </div>
-
-      {/* Hidden ReactPlayer */}
-      <div className="hidden">
-        <ReactPlayer
-          ref={playerRef}
-          url={
-            activeMusic?.downloadUrl.find(
-              (downloadUrl) => downloadUrl.quality === "320kbps"
-            )?.url
-          }
-          width="100%"
-          height="100%"
-          playing={isPlaying}
-          volume={volume}
-          muted={muted}
-          onProgress={handleProgress}
-          onDuration={setDuration}
-          onPlaybackRateChange={handlePlaybackRateChange}
-          onEnded={handleNextSong}
-          config={{
-            file: {
-              forceAudio: true,
-            },
-          }}
-          playsinline={true}
-        />
-      </div>
+      <ReactPlayer
+        ref={playerRef}
+        url={
+          activeMusic?.downloadUrl.find(
+            (downloadUrl) => downloadUrl.quality === "320kbps"
+          )?.url
+        }
+        width="100%"
+        height="100%"
+        playing={isPlaying}
+        volume={volume}
+        muted={muted}
+        onProgress={handleProgress}
+        onDuration={setDuration}
+        onPlaybackRateChange={handlePlaybackRateChange}
+        onEnded={handleNextSong}
+        config={{
+          file: {
+            forceAudio: true,
+          },
+        }}
+        playsinline={true}
+      />
     </div>
   );
 }

@@ -1,27 +1,28 @@
 // store.ts
 import { create } from 'zustand';
 
-// export type Song = {
-//   id: number;
-//   name: string;
-//   artists: {
-//     primary: {
-//       name: string;
-//     }[];
-//   };
-//   album: {
-//     name: string;
-//   };
-//   duration: number;
-//   image: {
-//     quality: string;
-//     url: string;
-//   }[];
-//   downloadUrl: {
-//     quality: string;
-//     url: string;
-//   }[];
-// };
+export type Song = {
+  id: number;
+  name: string;
+  type: string;
+  artists: {
+    primary: {
+      name: string;
+    }[];
+  };
+  album: {
+    name: string;
+  };
+  duration: number;
+  image: {
+    quality: string;
+    url: string;
+  }[];
+  downloadUrl: {
+    quality: string;
+    url: string;
+  }[];
+};
 
 type State = {
   activeMusic: Song | null;
