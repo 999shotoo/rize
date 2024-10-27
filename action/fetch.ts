@@ -21,6 +21,13 @@ export async function fetchAlbumById(id: string) {
     return data
 }
 
+export async function fetchArtistById(id: string) {
+    const response = await fetch(`${process.env.API_URL_2}/api/artists/${id}?songCount=1000&albumCount=1000`)
+    const data = await response.json()
+    return data
+}
+
+
 export async function fetchSongsById(id: string) {
     const fetchsongData = await fetch(`${process.env.API_URL_2}/api/songs/${id}`);
     const songData = await fetchsongData.json();

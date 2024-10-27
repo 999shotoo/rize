@@ -22,6 +22,15 @@ export const metadata: Metadata = {
     "RizePlay is a free music streaming website where you can stream your favorite musics online for free.",
   manifest: "/manifest.json",
   keywords: ["Music", "Songs", "Free", "No ads", "Watch", "Online", "RizePlay"],
+  openGraph: {
+    title: "Listen Music Free Online - RizePlay",
+    description:
+      "RizePlay is a free music streaming website where you can stream your favorite musics online for free.",
+    type: "website",
+    url: "https://rizeplay.vercel.app",
+    images:
+      "https://res.cloudinary.com/dyvrrgtvq/image/upload/v1730070119/Summer_Night_Serenade__Anime_Rooftop_Vibes_xsftiv.jpg",
+  },
 };
 
 export default function RootLayout({
