@@ -31,26 +31,22 @@ export default function FloatingPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.5);
   const [muted, setMuted] = useState(false);
-  const [played, setPlayed] = useState(0);
-  const [duration, setDuration] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
   const playerRef = useRef<ReactPlayer>(null);
   const { theme, setTheme } = useTheme();
 
-  const activeMusic = useStoreSongs((state) => state.activeMusic);
-  const songs = useStoreSongs((state) => state.songs);
-  const setActiveMusic = useStoreSongs((state) => state.setActiveMusic);
+const { activeMusic, songs, setActiveMusic, currentTime, duration, setCurrentTime, setDuration } = useStoreSongs();
 
   const handlePlayPause = () => setIsPlaying(!isPlaying);
   const handleVolumeChange = (value: number[]) => setVolume(value[0]);
   const handleToggleMute = () => setMuted(!muted);
   const handleSeekChange = (value: number[]) => {
-    setPlayed(value[0]);
+    setCurrentTime(value[0]);
     playerRef.current?.seekTo(value[0]);
   };
 
   const handleProgress = (state: { played: number }) => {
-    setPlayed(state.played);
+    setCurrentTime(state.played);
   };
 
   const formatTime = (seconds: number) => {
@@ -165,7 +161,7 @@ export default function FloatingPlayer() {
     }
   }, [isPlaying]);
 
-  const playedTime = played * duration;
+  const playedTime = currentTime * duration;
   useEffect(() => {
     if ("mediaSession" in navigator) {
       navigator.mediaSession.setPositionState({
@@ -355,10 +351,10 @@ export default function FloatingPlayer() {
             </div>
             <div className="w-full max-w-md flex items-center space-x-2">
               <span className="text-xs text-muted-foreground w-8 text-right">
-                {formatTime(played * duration)}
+                {formatTime(currentTime * duration)}
               </span>
               <Slider
-                value={[played]}
+                value={[currentTime]}
                 max={1}
                 step={0.01}
                 className="w-full"
@@ -444,10 +440,10 @@ export default function FloatingPlayer() {
             </div>
             <div className="w-full max-w-md flex items-center space-x-2 px-4">
               <span className="text-xs text-muted-foreground w-10 text-right">
-                {formatTime(played * duration)}
+                {formatTime(currentTime * duration)}
               </span>
               <Slider
-                value={[played]}
+                value={[currentTime]}
                 max={1}
                 step={0.01}
                 className="w-full"

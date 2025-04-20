@@ -52,11 +52,19 @@ export async function fetchPlaylistById(id: string) {
 export async function fetchSongById(id: string) {
     const response = await fetch(`${process.env.API_URL_2}/api/songs/${id}`)
     const data = await response.json()
+    console.log(data)
     return data
 }
 
-export async function fetchLyricsById(id: string) {
-    const response = await fetch(`${process.env.API_URL_2}/api/songs/${id}/lyrics`)
+export async function fetchLyricsById(
+  artist_name: string,
+  track_name: string,
+  album_name: string,
+  duration: number
+) {
+  const response = await fetch(
+    `https://lrclib.net//api/get?artist_name=${artist_name}&track_name=${track_name}&album_name=${album_name}`
+  );
     const data = await response.json()
     return data
 }
@@ -70,6 +78,7 @@ export async function fetchSearchSongs(query: string) {
 export async function fetchSearchAlbums(query: string) {
     const response = await fetch(`${process.env.API_URL_2}/api/search/albums?query=${query}`)
     const data = await response.json()
+    console.log(data)
     return data
 }
 
