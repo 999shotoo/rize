@@ -478,11 +478,7 @@ const { activeMusic, songs, setActiveMusic, currentTime, duration, setCurrentTim
       </div>
       <ReactPlayer
         ref={playerRef}
-        url={
-          activeMusic?.downloadUrl.find(
-            (downloadUrl) => downloadUrl.quality === "320kbps"
-          )?.url
-        }
+        url={"https://www.youtube.com/watch?v=AMcVJmb5mvk"}
         width="100%"
         height="100%"
         playing={isPlaying}
